@@ -14,9 +14,9 @@ That's it! Although you'll probably want to also add the binary to your path for
 ### Scoop - Coming Soon
 
 ### Go Get
-Do you have go installed? You can run just one simple command to install QSR!
+Do you have go installed? You can run just one simple command to install lunar!
 ```shell
-$ go get -u github.com/GreatGodApollo/qsr
+$ go get -u github.com/GreatGodApollo/lunar
 ```
 
 ## Usage
