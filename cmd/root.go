@@ -28,7 +28,7 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Version: "0.1.0",
+	Version: "0.2.0",
 	Use:   "lunar",
 	Short: "A CLI for Spacebin",
 	Long: `Lunar is a CLI for Spacebin that allows you to easily make documents.
@@ -175,9 +175,9 @@ func handleError(err error) {
 
 // hande the printing of a doc
 func printDoc(doc *gospacebin.HashDocument) {
-	url := resultBase + doc.ID
+	uri := resultBase + doc.ID
 	if raw {
-		url += "/raw"
+		uri += "/raw"
 	}
-	fmt.Println(internal.NewMessage(chalk.Green, "Check out your paste @").ThenColorStyle(chalk.Blue, chalk.Bold, url))
+	fmt.Println(internal.NewMessage(chalk.Green, "Check out your paste @").ThenColorStyle(chalk.Blue, chalk.Bold, uri))
 }
