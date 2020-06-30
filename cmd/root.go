@@ -17,6 +17,8 @@ import (
 	"github.com/ttacon/chalk"
 
 	"github.com/mitchellh/go-homedir"
+
+	"github.com/atotto/clipboard"
 )
 
 var (
@@ -25,6 +27,7 @@ var (
 	instance string
 	resultBase string
 	raw bool
+	copy bool
 )
 
 var rootCmd = &cobra.Command{
@@ -109,6 +112,7 @@ func init() {
 	rootCmd.Flags().StringVarP(&instance, "instance", "i", "https://api.spaceb.in", "the spacebin instance")
 	rootCmd.Flags().StringVar(&resultBase, "result-url", "https://spaceb.in", "the base url for response")
 	rootCmd.Flags().BoolVarP(&raw, "raw", "r", false, "do you want the raw url")
+	rootCmd.Flags().BoolVarP(&copy, "copy", "c", false, "copy the url to your clipboard")
 }
 
 func initConfig() {
@@ -175,9 +179,17 @@ func handleError(err error) {
 
 // hande the printing of a doc
 func printDoc(doc *gospacebin.HashDocument) {
-	uri := resultBase + doc.ID
+	uri := resultBase + "/" + doc.ID
 	if raw {
 		uri += "/raw"
 	}
 	fmt.Println(internal.NewMessage(chalk.Green, "Check out your paste @").ThenColorStyle(chalk.Blue, chalk.Bold, uri))
+	if copy {
+		if clipboard.Unsupported {
+			fmt.Println(internal.NewMessage(chalk.Red, "Your platform is unsupported for clipboard copying."))
+			return
+		}
+		_ = clipboard.WriteAll(uri)
+		fmt.Println(internal.NewMessage(chalk.Green, "URL copied to your clipboard!"))
+	}
 }
