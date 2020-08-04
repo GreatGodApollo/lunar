@@ -37,6 +37,7 @@ $ lunar --help
     
     Flags:
           --config string       config file (default is $HOME/.lunar.yaml)
+      -c, --copy                copy the url to your clipboard
       -f, --file string         the file to upload
       -h, --help                help for lunar
       -i, --instance string     the spacebin instance (default "https://api.spaceb.in")
