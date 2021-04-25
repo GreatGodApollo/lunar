@@ -3,9 +3,11 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"github.com/fatih/color"
 	"io"
 	"net/url"
 	"os"
+	"runtime"
 	"strings"
 
 	"github.com/GreatGodApollo/gospacebin"
@@ -14,20 +16,20 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/ttacon/chalk"
-
 	"github.com/mitchellh/go-homedir"
 
 	"github.com/atotto/clipboard"
 )
 
 var (
-	cfgFile string
-	file string
-	instance string
+	cfgFile    string
+	file       string
+	instance   string
 	resultBase string
-	raw bool
-	copy bool
+	extension  string
+	raw        bool
+	copy       bool
+	useColor   bool
 )
 
 var rootCmd = &cobra.Command{
@@ -53,11 +55,11 @@ or upload a document directly:
 			}
 		}
 		if _, err := url.ParseRequestURI(instance); err != nil {
-			fmt.Println(internal.NewMessage(chalk.Red, "Invalid instance URL!"))
+			fmt.Println(internal.NewMessage("Invalid instance URL!", color.FgRed))
 			return
 		}
 		if _, err := url.ParseRequestURI(resultBase); err != nil {
-			fmt.Println(internal.NewMessage(chalk.Red, "Invalid result URL!"))
+			fmt.Println(internal.NewMessage("Invalid result URL!", color.FgRed))
 			return
 		}
 
@@ -74,11 +76,11 @@ or upload a document directly:
 		} else {
 			if file != "" {
 				if !fileExists(file) {
-					fmt.Println(internal.NewMessage(chalk.Red, "File does not exist!"))
+					fmt.Println(internal.NewMessage("File does not exist!", color.FgRed))
 					return
 				}
 			} else {
-				fmt.Println(internal.NewMessage(chalk.Red, "You need to provide a file!"))
+				fmt.Println(internal.NewMessage("You need to provide a file!", color.FgRed))
 				return
 			}
 			f, err := os.Open(file)
@@ -109,10 +111,13 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.Flags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.lunar.yaml)")
 	rootCmd.Flags().StringVarP(&file, "file", "f", "", "the file to upload")
-	rootCmd.Flags().StringVarP(&instance, "instance", "i", "https://api.spaceb.in", "the spacebin instance")
+	rootCmd.Flags().StringVarP(&instance, "instance", "i", "https://spaceb.in", "the spacebin instance")
 	rootCmd.Flags().StringVar(&resultBase, "result-url", "https://spaceb.in", "the base url for response")
+	rootCmd.Flags().StringVarP(&extension, "extension", "e","none", "the file extension")
 	rootCmd.Flags().BoolVarP(&raw, "raw", "r", false, "do you want the raw url")
 	rootCmd.Flags().BoolVarP(&copy, "copy", "c", false, "copy the url to your clipboard")
+	noColor := runtime.GOOS == "windows" || color.NoColor
+	rootCmd.Flags().BoolVar(&useColor, "color", !noColor, "use color")
 }
 
 func initConfig() {
@@ -136,7 +141,8 @@ func initConfig() {
 
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println(internal.NewMessage(chalk.Magenta, "Using config file:").ThenColor(chalk.Green, viper.ConfigFileUsed()))
+		color.NoColor = !useColor || color.NoColor
+		fmt.Println(internal.NewMessage("Using config file:", color.FgMagenta).Then(viper.ConfigFileUsed(), color.FgGreen, color.Bold))
 	}
 }
 
@@ -168,13 +174,13 @@ func readFile(r io.Reader) string {
 // put a doc on the instance
 func postDoc(spacebin *gospacebin.Client, r io.Reader) (*gospacebin.HashDocument, error) {
 	input := readFile(r)
-	opts := gospacebin.NewCreateDocumentOpts(input)
+	opts := gospacebin.NewCreateDocumentOpts(input).SetExtension(extension)
 	return spacebin.CreateDocument(opts)
 }
 
 // handle an error
 func handleError(err error) {
-	fmt.Println(internal.NewMessage(chalk.Red, "An error occurred:").ThenColorStyle(chalk.Red, chalk.Bold, err.Error()))
+	fmt.Println(internal.NewMessage("An error occurred:", color.FgRed).Then(err.Error(), color.FgRed, color.Bold))
 }
 
 // hande the printing of a doc
@@ -183,13 +189,13 @@ func printDoc(doc *gospacebin.HashDocument) {
 	if raw {
 		uri += "/raw"
 	}
-	fmt.Println(internal.NewMessage(chalk.Green, "Check out your paste @").ThenColorStyle(chalk.Blue, chalk.Bold, uri))
+	fmt.Println(internal.NewMessage("Check out your paste @", color.FgGreen).Then(uri, color.FgCyan, color.Bold))
 	if copy {
 		if clipboard.Unsupported {
-			fmt.Println(internal.NewMessage(chalk.Red, "Your platform is unsupported for clipboard copying."))
+			fmt.Println(internal.NewMessage("Your platform is unsupported for clipboard copying.", color.FgRed))
 			return
 		}
 		_ = clipboard.WriteAll(uri)
-		fmt.Println(internal.NewMessage(chalk.Green, "URL copied to your clipboard!"))
+		fmt.Println(internal.NewMessage("URL copied to your clipboard!", color.FgGreen))
 	}
 }
