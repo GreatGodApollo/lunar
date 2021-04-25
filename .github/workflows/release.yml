@@ -12,6 +12,8 @@ jobs:
         uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_NAME: "lunar"
+          EXTRA_FILES: "README.md LICENSE"
           GOARCH: "386"
           GOOS: linux
   release-linux-amd64:
@@ -23,6 +25,8 @@ jobs:
         uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_NAME: "lunar"
+          EXTRA_FILES: "README.md LICENSE"
           GOARCH: amd64
           GOOS: linux
   release-darwin-386:
@@ -34,6 +38,8 @@ jobs:
         uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_NAME: "lunar"
+          EXTRA_FILES: "README.md LICENSE"
           GOARCH: "386"
           GOOS: darwin
   release-darwin-amd64:
@@ -45,6 +51,8 @@ jobs:
         uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_NAME: "lunar"
+          EXTRA_FILES: "README.md LICENSE"
           GOARCH: amd64
           GOOS: darwin
   release-windows-386:
@@ -56,6 +64,8 @@ jobs:
         uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_NAME: "lunar"
+          EXTRA_FILES: "README.md LICENSE"
           GOARCH: "386"
           GOOS: windows
   release-windows-amd64:
@@ -67,5 +77,7 @@ jobs:
         uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_NAME: "lunar"
+          EXTRA_FILES: "README.md LICENSE"
           GOARCH: amd64
           GOOS: windows
