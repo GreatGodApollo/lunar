@@ -9,10 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: compile and release
-        uses: ngs/go-release.action@v1.0.1
+        uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GO111MODULE: on
           GOARCH: "386"
           GOOS: linux
   release-linux-amd64:
@@ -21,10 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: compile and release
-        uses: ngs/go-release.action@v1.0.1
+        uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GO111MODULE: on
           GOARCH: amd64
           GOOS: linux
   release-darwin-386:
@@ -33,10 +31,9 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: compile and release
-        uses: ngs/go-release.action@v1.0.1
+        uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GO111MODULE: on
           GOARCH: "386"
           GOOS: darwin
   release-darwin-amd64:
@@ -45,10 +42,9 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: compile and release
-        uses: ngs/go-release.action@v1.0.1
+        uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GO111MODULE: on
           GOARCH: amd64
           GOOS: darwin
   release-windows-386:
@@ -57,10 +53,9 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: compile and release
-        uses: ngs/go-release.action@v1.0.1
+        uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GO111MODULE: on
           GOARCH: "386"
           GOOS: windows
   release-windows-amd64:
@@ -69,9 +64,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: compile and release
-        uses: ngs/go-release.action@v1.0.1
+        uses: ConsulTent/go-release.action@v1.05
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GO111MODULE: on
           GOARCH: amd64
           GOOS: windows
