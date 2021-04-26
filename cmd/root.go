@@ -33,7 +33,7 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Version: "0.5.0",
+	Version: "0.6.5",
 	Use:   "lunar",
 	Short: "A CLI for Spacebin",
 	Long: `Lunar is a CLI for Spacebin that allows you to easily make documents.
