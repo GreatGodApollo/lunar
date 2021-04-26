@@ -68,6 +68,19 @@ jobs:
           EXTRA_FILES: "README.md LICENSE"
           GOARCH: amd64
           GOOS: darwin
+  release-darwin-arm64:
+    name: release darwin/arm64
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: compile and release
+        uses: ConsulTent/go-release.action@v1.05
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_NAME: "lunar"
+          EXTRA_FILES: "README.md LICENSE"
+          GOARCH: arm64
+          GOOS: darwin
   release-windows-386:
     name: release windows/386
     runs-on: ubuntu-latest
